@@ -1,7 +1,7 @@
 package com.zuicoding.platform.rpc.proxy.impl;
 
 import com.zuicoding.platform.rpc.common.RpcCaller;
-import com.zuicoding.platform.rpc.proxy.RpcConsumerProxy;
+import com.zuicoding.platform.rpc.proxy.RpcInvoker;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,23 +12,28 @@ import java.lang.reflect.Proxy;
  * <p>
  * Description :<p></p>
  */
-public class JdkConsumerProxy extends RpcConsumerProxy implements InvocationHandler {
+public class JdkConsumerProxy<T>  implements InvocationHandler {
 
-    private Object target;
+    private Class<T> clazz;
 
-    public Object bind(Object target){
-        this.target = target;
-        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
-                target.getClass().getInterfaces(),this);
+    private RpcInvoker invoker;
+
+    public JdkConsumerProxy() {
+        invoker = new RpcConsumerInoker();
+    }
+
+    public T bind(Class<T> clazz){
+        this.clazz = clazz;
+
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
+                new Class<?>[]{clazz},this);
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        RpcCaller caller = new RpcCaller(clazz.getName(),method.getName(),args);
+        invoker.invoke(caller);
         return null;
     }
 
-    @Override
-    public void buildCaller(RpcCaller caller) {
-
-    }
 }

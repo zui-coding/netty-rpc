@@ -7,10 +7,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-server</artifactId>
+    <artifactId>rpc-protocol</artifactId>
     <packaging>jar</packaging>
 
-    <name>rpc-server</name>
+    <name>rpc-protocol</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -18,10 +18,5 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.zuicoding.platform</groupId>
-            <artifactId>rpc-proxy</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 </project>

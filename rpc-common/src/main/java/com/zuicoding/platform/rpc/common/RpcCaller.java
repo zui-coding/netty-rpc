@@ -11,7 +11,7 @@ public class RpcCaller implements Serializable  {
     private static final long serialVersionUID = -8681715352602910337L;
 
     //调用的接口
-    private Class call;
+    private String klass;
     //调用的方法
     private String method;
     //方法依赖的参数
@@ -22,30 +22,31 @@ public class RpcCaller implements Serializable  {
     public RpcCaller() {
     }
 
-    public RpcCaller(Class call, String method, Object params, Object result) {
-        this.call = call;
+    public RpcCaller(String klass, String method, Object params, Object result) {
+        this.klass = klass;
         this.method = method;
         this.params = params;
         this.result = result;
     }
 
-    public RpcCaller(Class call, String method) {
-        this.call = call;
+    public RpcCaller(String klass, String method) {
+        this.klass = klass;
         this.method = method;
     }
 
-    public RpcCaller(Class call, String method, Object params) {
-        this.call = call;
+    public RpcCaller(String klass, String method, Object params) {
+        this.klass = klass;
         this.method = method;
         this.params = params;
     }
 
-    public Class getCall() {
-        return call;
+
+    public String getKlass() {
+        return klass;
     }
 
-    public void setCall(Class call) {
-        this.call = call;
+    public void setKlass(String klass) {
+        this.klass = klass;
     }
 
     public String getMethod() {
