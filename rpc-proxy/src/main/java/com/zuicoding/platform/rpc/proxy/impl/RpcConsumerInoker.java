@@ -4,12 +4,15 @@ import com.zuicoding.platform.rpc.common.RpcCaller;
 import com.zuicoding.platform.rpc.proxy.RpcInvoker;
 import com.zuicoding.platform.rpc.proxy.handler.RpcConsumerHandler;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 
 /**
  * Created by Stephen.lin on 2017/9/21.
@@ -44,9 +47,19 @@ public class RpcConsumerInoker implements RpcInvoker {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(consumerHandler);
+                        ch.pipeline()
+                                .addLast(new ObjectEncoder())
+                                //.addLast(new ObjectDecoder())
+                                .addLast(consumerHandler);
                     }
                 });
+        try {
+            ChannelFuture cf = bootstrap.connect(host, port).sync();
+            cf.channel().closeFuture().sync();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 
