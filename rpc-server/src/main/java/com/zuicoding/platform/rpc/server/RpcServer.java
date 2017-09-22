@@ -7,6 +7,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +41,9 @@ public class RpcServer {
 
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast((ChannelHandler) providerHandler);
+                        ch.pipeline().addLast(new ObjectEncoder())
+                                .addLast(new ObjectDecoder(Integer.MAX_VALUE,ClassResolvers.cacheDisabled(null)))
+                                .addLast((ChannelHandler) providerHandler);
                     }
                 }).option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -52,7 +57,8 @@ public class RpcServer {
             ChannelFuture f = bootstrap.bind(port).sync();
             f.channel().closeFuture().sync();
         }catch (Exception e){
-            //throw new RpcException(e);
+            logger.error("",e);
+            System.exit(1);
         }finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
@@ -82,9 +88,5 @@ public class RpcServer {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public static void main(String[] args) {
-        new RpcServer().start();
     }
 }

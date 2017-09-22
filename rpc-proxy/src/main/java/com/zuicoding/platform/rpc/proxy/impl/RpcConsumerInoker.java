@@ -11,8 +11,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Stephen.lin on 2017/9/21.
@@ -20,6 +23,8 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
  * Description :<p></p>
  */
 public class RpcConsumerInoker implements RpcInvoker {
+
+    private Logger logger = LoggerFactory.getLogger(RpcConsumerInoker.class);
 
     private String host = "127.0.0.1";
     private int port = 2017;
@@ -49,15 +54,21 @@ public class RpcConsumerInoker implements RpcInvoker {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
                                 .addLast(new ObjectEncoder())
-                                //.addLast(new ObjectDecoder())
+                                .addLast(new ObjectDecoder(Integer.MAX_VALUE,
+                                        ClassResolvers.cacheDisabled(null)))
                                 .addLast(consumerHandler);
                     }
                 });
         try {
             ChannelFuture cf = bootstrap.connect(host, port).sync();
+            logger.info("connnected [{}]:[{}] server success....",this.host,this.port);
             cf.channel().closeFuture().sync();
+            logger.info("close connection success...");
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            workerGroup.shutdownGracefully();
+
         }
 
 
