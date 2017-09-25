@@ -9,7 +9,8 @@ import com.zuicoding.platform.demo.api.IDemoService;
  */
 public class DemoServiceImpl  implements IDemoService{
     @Override
-    public void sayHell(String name) {
+    public String sayHell(String name) {
         System.err.println("hello,"+name);
+        return "hello,"+name;
     }
 }

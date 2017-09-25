@@ -35,9 +35,9 @@ public class DefaultRpcExecutor extends ChannelInboundHandlerAdapter implements 
             RpcCaller caller = (RpcCaller)msg;
             if ("toString".equals(caller.getMethod()) && (caller.getParams() == null)) return;
             execute(caller);
-
         }
 
+        ctx.writeAndFlush(msg);
     }
 
     @Override

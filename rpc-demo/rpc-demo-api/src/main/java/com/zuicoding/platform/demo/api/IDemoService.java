@@ -7,5 +7,5 @@ package com.zuicoding.platform.demo.api;
  */
 public interface IDemoService {
 
-    void sayHell(String name);
+    String sayHell(String name);
 }

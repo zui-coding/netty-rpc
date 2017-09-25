@@ -6,7 +6,10 @@ import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Stephen.lin on 2017/9/21.
@@ -17,8 +20,6 @@ import java.util.concurrent.CountDownLatch;
 public class RpcConsumerHandler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(RpcConsumerHandler.class);
-
-
     private ChannelHandlerContext context;
 
     private RpcCaller caller;
@@ -43,6 +44,7 @@ public class RpcConsumerHandler extends ChannelInboundHandlerAdapter {
         super.channelActive(ctx);
         logger.info("---------channelActive -----------");
         ctx.writeAndFlush(caller);
+
     }
 
 
@@ -55,6 +57,9 @@ public class RpcConsumerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
+        if (msg instanceof RpcCaller){
+           caller.setResult(((RpcCaller) msg).getResult());
+        }
         ctx.close();
         logger.info("---------channelRead--------");
     }

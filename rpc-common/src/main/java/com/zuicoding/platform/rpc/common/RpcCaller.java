@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class RpcCaller implements Serializable  {
     private static final long serialVersionUID = -8681715352602910337L;
 
+    private long id;
     //调用的接口
     private String klass;
     //调用的方法
@@ -71,5 +72,13 @@ public class RpcCaller implements Serializable  {
 
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

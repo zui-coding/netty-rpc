@@ -6,6 +6,9 @@ import com.zuicoding.platform.rpc.proxy.RpcInvoker;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Stephen.lin on 2017/9/21.
@@ -14,6 +17,8 @@ import java.lang.reflect.Proxy;
  */
 public class JdkConsumerProxy<T>  implements InvocationHandler {
 
+    private AtomicLong ato = new AtomicLong();
+    private Map<Long,RpcCaller> global = new ConcurrentHashMap<>();
     private Class<T> clazz;
 
     private RpcInvoker invoker;
@@ -29,8 +34,10 @@ public class JdkConsumerProxy<T>  implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if ("toString".equals(method.getName()) && (args == null || args.length == 0)) return null;
         RpcCaller caller = new RpcCaller(clazz.getName(),method.getName(),args);
+        caller.setId(ato.incrementAndGet());
+        global.put(caller.getId(),caller);
         invoker = new RpcConsumerInoker(caller);
-        return null;
+        return caller.getResult();
     }
 
 }
