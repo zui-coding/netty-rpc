@@ -15,14 +15,14 @@ public class RpcCaller implements Serializable  {
     //调用的方法
     private String method;
     //方法依赖的参数
-    private Object params;
+    private Object[] params;
     //方法返回的结果
     private Object result;
 
     public RpcCaller() {
     }
 
-    public RpcCaller(String klass, String method, Object params, Object result) {
+    public RpcCaller(String klass, String method, Object[] params, Object result) {
         this.klass = klass;
         this.method = method;
         this.params = params;
@@ -34,7 +34,7 @@ public class RpcCaller implements Serializable  {
         this.method = method;
     }
 
-    public RpcCaller(String klass, String method, Object params) {
+    public RpcCaller(String klass, String method, Object[] params) {
         this.klass = klass;
         this.method = method;
         this.params = params;
@@ -57,11 +57,11 @@ public class RpcCaller implements Serializable  {
         this.method = method;
     }
 
-    public Object getParams() {
+    public Object[] getParams() {
         return params;
     }
 
-    public void setParams(Object params) {
+    public void setParams(Object[] params) {
         this.params = params;
     }
 

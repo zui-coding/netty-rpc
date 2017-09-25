@@ -22,7 +22,7 @@
   <dependencies>
     <dependency>
       <groupId>com.zuicoding.platform</groupId>
-      <artifactId>rpc-server</artifactId>
+      <artifactId>rpc-executor</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>

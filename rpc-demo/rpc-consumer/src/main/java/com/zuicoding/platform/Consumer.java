@@ -9,10 +9,13 @@ import com.zuicoding.platform.rpc.proxy.impl.JdkConsumerProxy;
  */
 public class Consumer
 {
-    public static void main( String[] args )
-    {
+    public void sayHello(){
+
+    }
+    public static void main( String[] args ) throws NoSuchMethodException {
         JdkConsumerProxy<IDemoService> proxy = new JdkConsumerProxy();
         IDemoService service = proxy.bind(IDemoService.class);
         service.sayHell("张三");
     }
+
 }

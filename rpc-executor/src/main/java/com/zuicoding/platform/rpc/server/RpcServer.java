@@ -1,7 +1,6 @@
 package com.zuicoding.platform.rpc.server;
 
-import com.zuicoding.platform.rpc.proxy.RpcInvoker;
-import com.zuicoding.platform.rpc.proxy.handler.RpcProviderHandler;
+import com.zuicoding.platform.rpc.server.provider.RpcExecutor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -26,8 +25,9 @@ public class RpcServer {
 
     private int  bossThreads,workerThreads,port = 2017;
     private ServerBootstrap bootstrap ;
-    private RpcInvoker providerHandler;
-    public RpcServer(){
+    private RpcExecutor executor;
+    public RpcServer(RpcExecutor executor){
+        this.executor = executor;
         init();
     }
 
@@ -35,15 +35,15 @@ public class RpcServer {
         bossGroup = new NioEventLoopGroup(bossThreads);
         workerGroup = new NioEventLoopGroup(workerThreads);
         bootstrap = new ServerBootstrap();
-        providerHandler = new RpcProviderHandler();
         bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
 
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new ObjectEncoder())
-                                .addLast(new ObjectDecoder(Integer.MAX_VALUE,ClassResolvers.cacheDisabled(null)))
-                                .addLast((ChannelHandler) providerHandler);
+                                .addLast(new ObjectDecoder(Integer.MAX_VALUE,
+                                        ClassResolvers.cacheDisabled(null)))
+                                .addLast((ChannelHandler) executor);
                     }
                 }).option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);

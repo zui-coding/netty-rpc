@@ -31,6 +31,8 @@ public class RpcConsumerInoker implements RpcInvoker {
     private EventLoopGroup workerGroup ;
     private Bootstrap bootstrap;
     private RpcConsumerHandler consumerHandler;
+
+    private RpcCaller caller;
     public RpcConsumerInoker() {
         init();
     }
@@ -41,10 +43,23 @@ public class RpcConsumerInoker implements RpcInvoker {
         init();
     }
 
+    public RpcConsumerInoker(String host, int port, RpcCaller caller) {
+        this.host = host;
+        this.port = port;
+        this.caller = caller;
+        init();
+    }
+
+    public RpcConsumerInoker(RpcCaller caller) {
+        this.caller = caller;
+        init();
+    }
+
     private void init(){
         workerGroup  = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
         consumerHandler = new RpcConsumerHandler();
+        consumerHandler.setCaller(caller);
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
@@ -65,7 +80,7 @@ public class RpcConsumerInoker implements RpcInvoker {
             cf.channel().closeFuture().sync();
             logger.info("close connection success...");
         }catch (Exception e){
-            e.printStackTrace();
+           logger.error("",e);
         }finally {
             workerGroup.shutdownGracefully();
 

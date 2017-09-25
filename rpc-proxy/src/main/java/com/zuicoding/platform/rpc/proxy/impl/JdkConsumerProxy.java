@@ -18,10 +18,6 @@ public class JdkConsumerProxy<T>  implements InvocationHandler {
 
     private RpcInvoker invoker;
 
-    public JdkConsumerProxy() {
-        invoker = new RpcConsumerInoker();
-    }
-
     public T bind(Class<T> clazz){
         this.clazz = clazz;
 
@@ -31,8 +27,9 @@ public class JdkConsumerProxy<T>  implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if ("toString".equals(method.getName()) && (args == null || args.length == 0)) return null;
         RpcCaller caller = new RpcCaller(clazz.getName(),method.getName(),args);
-        invoker.invoke(caller);
+        invoker = new RpcConsumerInoker(caller);
         return null;
     }
 

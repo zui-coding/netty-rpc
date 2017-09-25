@@ -21,12 +21,28 @@ public class RpcConsumerHandler extends ChannelInboundHandlerAdapter {
 
     private ChannelHandlerContext context;
 
+    private RpcCaller caller;
+
+    public RpcCaller getCaller() {
+        return caller;
+    }
+
+    public void setCaller(RpcCaller caller) {
+        this.caller = caller;
+    }
+
+    public RpcConsumerHandler() {
+    }
+
+    public RpcConsumerHandler(RpcCaller caller) {
+        this.caller = caller;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         logger.info("---------channelActive -----------");
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER);
+        ctx.writeAndFlush(caller);
     }
 
 

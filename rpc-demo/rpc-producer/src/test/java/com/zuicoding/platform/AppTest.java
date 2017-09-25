@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple Provider.
+ * Unit test for simple Producer.
  */
 public class AppTest 
     extends TestCase
