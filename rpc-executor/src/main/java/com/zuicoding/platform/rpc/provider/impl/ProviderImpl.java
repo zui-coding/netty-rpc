@@ -1,8 +1,8 @@
-package com.zuicoding.platform.rpc.server.provider.impl;
+package com.zuicoding.platform.rpc.provider.impl;
 
+import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.registry.Register;
 import com.zuicoding.platform.rpc.registry.RpcRegistry;
-import com.zuicoding.platform.rpc.server.provider.Provider;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

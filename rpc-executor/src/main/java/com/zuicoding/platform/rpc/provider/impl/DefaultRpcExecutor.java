@@ -1,11 +1,12 @@
-package com.zuicoding.platform.rpc.server.provider.impl;
+package com.zuicoding.platform.rpc.provider.impl;
 
 import com.zuicoding.platform.rpc.common.RpcCaller;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
+import com.zuicoding.platform.rpc.provider.Provider;
+import com.zuicoding.platform.rpc.provider.RpcExecutor;
 import com.zuicoding.platform.rpc.registry.Register;
-import com.zuicoding.platform.rpc.server.RpcServer;
-import com.zuicoding.platform.rpc.server.provider.Provider;
-import com.zuicoding.platform.rpc.server.provider.RpcExecutor;
+import com.zuicoding.platform.rpc.provider.RpcServerBak;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -16,15 +17,16 @@ import java.lang.reflect.Method;
  * <p>
  * Description :<p></p>
  */
+@ChannelHandler.Sharable
 public class DefaultRpcExecutor extends ChannelInboundHandlerAdapter implements RpcExecutor {
 
 
     private Provider provider;
 
-    private RpcServer server;
+    private RpcServerBak server;
 
     public void start(){
-        server = new RpcServer(this);
+        server = new RpcServerBak(this);
         server.start();
     }
 

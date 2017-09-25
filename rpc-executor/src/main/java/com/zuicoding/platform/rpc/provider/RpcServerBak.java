@@ -1,6 +1,5 @@
-package com.zuicoding.platform.rpc.server;
+package com.zuicoding.platform.rpc.provider;
 
-import com.zuicoding.platform.rpc.server.provider.RpcExecutor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -17,16 +16,16 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Description :<p></p>
  */
-public class RpcServer {
+public class RpcServerBak {
 
-    private Logger logger = LoggerFactory.getLogger(RpcServer.class);
+    private Logger logger = LoggerFactory.getLogger(RpcServerBak.class);
 
     private EventLoopGroup bossGroup,workerGroup;
 
     private int  bossThreads,workerThreads,port = 2017;
     private ServerBootstrap bootstrap ;
     private RpcExecutor executor;
-    public RpcServer(RpcExecutor executor){
+    public RpcServerBak(RpcExecutor executor){
         this.executor = executor;
         init();
     }

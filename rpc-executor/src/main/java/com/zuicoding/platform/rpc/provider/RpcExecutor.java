@@ -1,4 +1,4 @@
-package com.zuicoding.platform.rpc.server.provider;
+package com.zuicoding.platform.rpc.provider;
 
 import com.zuicoding.platform.rpc.common.RpcCaller;
 

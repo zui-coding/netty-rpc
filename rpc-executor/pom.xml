@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.zuicoding.platform</groupId>
-            <artifactId>rpc-proxy</artifactId>
+            <artifactId>rpc-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

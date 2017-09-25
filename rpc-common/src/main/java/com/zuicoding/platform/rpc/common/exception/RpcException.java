@@ -14,5 +14,7 @@ public class RpcException extends RuntimeException {
     public RpcException(Throwable thr){
         super(thr);
     }
-
+    public RpcException(String message,Throwable thr){
+        super(message,thr);
+    }
 }

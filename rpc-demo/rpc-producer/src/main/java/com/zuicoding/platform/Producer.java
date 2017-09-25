@@ -2,9 +2,9 @@ package com.zuicoding.platform;
 
 import com.zuicoding.platform.demo.impl.DemoServiceImpl;
 import com.zuicoding.platform.rpc.registry.Register;
-import com.zuicoding.platform.rpc.server.provider.Provider;
-import com.zuicoding.platform.rpc.server.provider.impl.DefaultRpcExecutor;
-import com.zuicoding.platform.rpc.server.provider.impl.ProviderImpl;
+import com.zuicoding.platform.rpc.provider.Provider;
+import com.zuicoding.platform.rpc.provider.impl.DefaultRpcExecutor;
+import com.zuicoding.platform.rpc.provider.impl.ProviderImpl;
 
 /**
  * Hello world!

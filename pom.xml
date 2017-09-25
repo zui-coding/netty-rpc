@@ -8,7 +8,6 @@
     <modules>
         <module>rpc-executor</module>
         <module>rpc-common</module>
-        <module>rpc-proxy</module>
         <module>rpc-protocol</module>
         <module>rpc-registry</module>
     </modules>
