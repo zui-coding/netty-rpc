@@ -1,9 +1,12 @@
 package com.zuicoding.platform.rpc.provider.impl;
 
+import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.registry.Register;
 import com.zuicoding.platform.rpc.registry.RpcRegistry;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,22 +17,51 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProviderImpl implements Provider {
 
-    private Map<String,Register> localMap = new ConcurrentHashMap<>();
-
     private RpcRegistry registry;
 
+    private String interfaces;
+    private Object ref;
 
-    @Override
+    public ProviderImpl() {
+    }
+
+    public ProviderImpl(String interfaces, Object ref) {
+        this.interfaces = interfaces;
+        this.ref = ref;
+    }
+
+
     public void provide(Register register) {
         if (registry != null){
             registry.registry(register);
         }
-        localMap.put(register.getIinterface(),register);
     }
 
     public Register getRegister(String iinterface){
 
-        return localMap.get(iinterface);
+        return null;
+    }
+
+    @Override
+    public RpcCaller invoke(RpcCaller caller) {
+        try {
+            Class clazz = Class.forName(interfaces);
+            Class[] argClasses = null;
+            if (caller.getParams() != null){
+                Object[] params = caller.getParams();
+                int len = params.length;
+                argClasses = new  Class[len];
+                for (int i = 0; i < len; i++) {
+                    argClasses[i] = params[i].getClass();
+                }
+            }
+            Method method= clazz.getMethod(caller.getMethod(),argClasses);
+           Object result = method.invoke(ref,caller.getParams());
+           caller.setResult(result);
+           return caller;
+        }catch (Exception e){
+            throw new RpcException(e);
+        }
     }
 
     public RpcRegistry getRegistry() {
@@ -38,5 +70,21 @@ public class ProviderImpl implements Provider {
 
     public void setRegistry(RpcRegistry registry) {
         this.registry = registry;
+    }
+
+    public String getInterfaces() {
+        return interfaces;
+    }
+
+    public void setInterfaces(String interfaces) {
+        this.interfaces = interfaces;
+    }
+
+    public Object getRef() {
+        return ref;
+    }
+
+    public void setRef(Object ref) {
+        this.ref = ref;
     }
 }

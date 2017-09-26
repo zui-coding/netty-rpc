@@ -1,5 +1,6 @@
 package com.zuicoding.platform.rpc.handler;
 
+import com.zuicoding.platform.rpc.provider.Provider;
 import io.netty.channel.ChannelHandler;
 
 /**
@@ -8,5 +9,7 @@ import io.netty.channel.ChannelHandler;
  * Description :<p></p>
  */
 public interface RpcHandler extends ChannelHandler {
+
+    void registe(Provider provider);
 
 }

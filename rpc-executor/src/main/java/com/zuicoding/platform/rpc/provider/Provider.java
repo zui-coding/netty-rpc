@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.provider;
 
-import com.zuicoding.platform.rpc.registry.Register;
+import com.zuicoding.platform.rpc.common.RpcCaller;
 
 /**
  * Created by Stephen.lin on 2017/9/25.
@@ -9,6 +9,9 @@ import com.zuicoding.platform.rpc.registry.Register;
  */
 public interface Provider {
 
-    void provide(Register register);
-    Register getRegister(String iinterface);
+    RpcCaller invoke(RpcCaller caller);
+    void setRef(Object ref);
+    void setInterfaces(String interfaces);
+    String getInterfaces();
+    Object getRef();
 }

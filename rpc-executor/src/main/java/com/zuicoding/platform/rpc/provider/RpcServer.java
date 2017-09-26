@@ -9,5 +9,5 @@ public interface RpcServer {
 
     void  start();
     void stop();
-
+    void addProvider(Provider provider);
 }

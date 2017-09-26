@@ -3,6 +3,7 @@ package com.zuicoding.platform.rpc.provider.impl;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.handler.RpcHandler;
 import com.zuicoding.platform.rpc.handler.impl.DefaultRpcHandlerImpl;
+import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.provider.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -27,6 +28,7 @@ public class DefaultNettyRpcServer implements RpcServer {
     private ServerBootstrap bootstrap;
     private ChannelFuture channelFuture;
     private RpcHandler handler;
+    private boolean isStart = false;
     public DefaultNettyRpcServer() {
     }
 
@@ -68,7 +70,9 @@ public class DefaultNettyRpcServer implements RpcServer {
             channelFuture =  bootstrap.bind(port).sync();
             logger.info("server {}:{} started success...");
             logger.info("boss thread count:{},worker thread count:{}...",this.bossThreads,this.workerThreads);
+            isStart = true;
         }catch (Exception e){
+            isStart = false;
             throw new RpcException(String.format("start port: %s server error", this.port),e);
         }
 
@@ -83,10 +87,20 @@ public class DefaultNettyRpcServer implements RpcServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
             logger.info("stop port:{} success...",this.port);
+            isStart = false;
         }catch (Exception e){
+            isStart = false;
             throw new RpcException(e);
         }
 
+    }
+
+    @Override
+    public void addProvider(Provider provider) {
+        if (!isStart){
+            throw new RpcException("This server hasn't  started....");
+        }
+        handler.registe(provider);
     }
 
     public int getBossThreads() {

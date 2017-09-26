@@ -12,7 +12,7 @@ public class RpcCaller implements Serializable  {
 
     private long id;
     //调用的接口
-    private String klass;
+    private String interfaces;
     //调用的方法
     private String method;
     //方法依赖的参数
@@ -23,31 +23,31 @@ public class RpcCaller implements Serializable  {
     public RpcCaller() {
     }
 
-    public RpcCaller(String klass, String method, Object[] params, Object result) {
-        this.klass = klass;
+    public RpcCaller(String interfaces, String method, Object[] params, Object result) {
+        this.interfaces = interfaces;
         this.method = method;
         this.params = params;
         this.result = result;
     }
 
-    public RpcCaller(String klass, String method) {
-        this.klass = klass;
+    public RpcCaller(String interfaces, String method) {
+        this.interfaces = interfaces;
         this.method = method;
     }
 
-    public RpcCaller(String klass, String method, Object[] params) {
-        this.klass = klass;
+    public RpcCaller(String interfaces, String method, Object[] params) {
+        this.interfaces = interfaces;
         this.method = method;
         this.params = params;
     }
 
 
-    public String getKlass() {
-        return klass;
+    public String getInterfaces() {
+        return interfaces;
     }
 
-    public void setKlass(String klass) {
-        this.klass = klass;
+    public void setInterfaces(String interfaces) {
+        this.interfaces = interfaces;
     }
 
     public String getMethod() {

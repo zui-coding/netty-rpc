@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Stephen.lin on 2017/9/25.
  * <p>
- * Description :<p></p>
+ * Description :<p>模拟一个注册中心</p>
  */
-public class DefaultRpcRegistryImpl implements RpcRegistry {
+public class MockRpcRegistryImpl implements RpcRegistry {
 
     private Map<String,Register> localMap = new ConcurrentHashMap<>();
 
