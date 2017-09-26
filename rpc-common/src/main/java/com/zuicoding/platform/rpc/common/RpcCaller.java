@@ -20,6 +20,8 @@ public class RpcCaller implements Serializable  {
     //方法返回的结果
     private Object result;
 
+    private RpcState state = RpcState.SEND;
+
     public RpcCaller() {
     }
 
@@ -80,5 +82,13 @@ public class RpcCaller implements Serializable  {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public RpcState getState() {
+        return state;
+    }
+
+    public void setState(RpcState state) {
+        this.state = state == null ? RpcState.SEND : state;
     }
 }

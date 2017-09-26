@@ -3,7 +3,6 @@ package com.zuicoding.platform.rpc.consumer;
 import com.zuicoding.platform.rpc.RpcInvoker;
 import com.zuicoding.platform.rpc.common.RpcCaller;
 import com.zuicoding.platform.rpc.consumer.impl.DefaultClient;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +39,7 @@ public class JdkRpcInvoker<T>
         client.connect();
         if ("toString".equals(method.getName()) && (args == null || args.length == 0)) return null;
         RpcCaller caller = new RpcCaller(clazz.getName(),method.getName(),args);
-        //caller.setId(ato.incrementAndGet());
-        //global.put(caller.getId(),caller);
         client.send(caller);
-        return null;
+        return caller.getResult();
     }
 }

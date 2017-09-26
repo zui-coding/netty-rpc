@@ -1,6 +1,7 @@
 package com.zuicoding.platform.rpc.provider.impl;
 
 import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.RpcState;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.registry.Register;
@@ -58,6 +59,7 @@ public class ProviderImpl implements Provider {
             Method method= clazz.getMethod(caller.getMethod(),argClasses);
            Object result = method.invoke(ref,caller.getParams());
            caller.setResult(result);
+           caller.setState(RpcState.RECIVE);
            return caller;
         }catch (Exception e){
             throw new RpcException(e);
