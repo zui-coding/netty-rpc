@@ -10,13 +10,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * <p>
  * Description :<p>讲对象转换成二进制</p>
  */
-public class RpcEncoder extends MessageToByteEncoder<RpcCaller> {
+public abstract class RpcEncoder extends MessageToByteEncoder<RpcCaller> {
 
 
-
-
-    @Override
-    protected void encode(ChannelHandlerContext ctx, RpcCaller msg, ByteBuf out) throws Exception {
-
-    }
 }

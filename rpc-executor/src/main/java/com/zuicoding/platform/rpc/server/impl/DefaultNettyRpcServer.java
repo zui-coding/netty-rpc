@@ -1,10 +1,10 @@
-package com.zuicoding.platform.rpc.provider.impl;
+package com.zuicoding.platform.rpc.server.impl;
 
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.handler.RpcHandler;
 import com.zuicoding.platform.rpc.handler.impl.DefaultRpcHandlerImpl;
 import com.zuicoding.platform.rpc.provider.Provider;
-import com.zuicoding.platform.rpc.provider.RpcServer;
+import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -29,6 +29,7 @@ public class DefaultNettyRpcServer implements RpcServer {
     private ChannelFuture channelFuture;
     private RpcHandler handler;
     private boolean isStart = false;
+
     public DefaultNettyRpcServer() {
     }
 

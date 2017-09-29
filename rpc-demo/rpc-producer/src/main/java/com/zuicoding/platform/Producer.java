@@ -1,9 +1,8 @@
 package com.zuicoding.platform;
 
 import com.zuicoding.platform.demo.impl.DemoServiceImpl;
-import com.zuicoding.platform.rpc.provider.RpcServer;
-import com.zuicoding.platform.rpc.provider.impl.DefaultNettyRpcServer;
-import com.zuicoding.platform.rpc.registry.Register;
+import com.zuicoding.platform.rpc.server.RpcServer;
+import com.zuicoding.platform.rpc.server.impl.DefaultNettyRpcServer;
 import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.provider.impl.ProviderImpl;
 

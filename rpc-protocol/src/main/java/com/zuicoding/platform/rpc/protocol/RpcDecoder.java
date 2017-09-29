@@ -11,11 +11,8 @@ import java.util.List;
  * <p>
  * Description :<p></p>
  */
-public class RpcDecoder extends MessageToMessageDecoder<RpcCaller> {
+public abstract class RpcDecoder extends MessageToMessageDecoder<RpcCaller> {
 
 
-    @Override
-    protected void decode(ChannelHandlerContext ctx, RpcCaller msg, List<Object> out) throws Exception {
 
-    }
 }
