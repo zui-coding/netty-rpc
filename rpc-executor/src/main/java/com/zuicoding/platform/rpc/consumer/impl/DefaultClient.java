@@ -3,11 +3,13 @@ package com.zuicoding.platform.rpc.consumer.impl;
 import com.zuicoding.platform.rpc.common.RpcMessage;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.consumer.Client;
-import com.zuicoding.platform.rpc.handler.RpcHandler;
+import com.zuicoding.platform.rpc.handler.RpcClientHandler;
 import com.zuicoding.platform.rpc.handler.RpcMessageClientChannelInitializer;
-import com.zuicoding.platform.rpc.handler.impl.RpcMessageChannelHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
@@ -27,7 +29,6 @@ public class DefaultClient implements Client {
     private EventLoopGroup workerGroup ;
     private Bootstrap bootstrap;
     private ChannelFuture channelFuture;
-    private RpcHandler handler;
     private ChannelInitializer channelInitializer;
     public DefaultClient() {
     }
@@ -63,7 +64,6 @@ public class DefaultClient implements Client {
         channelInitializer = new RpcMessageClientChannelInitializer();
         workerGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        handler = new RpcMessageChannelHandler();
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
@@ -95,10 +95,10 @@ public class DefaultClient implements Client {
 
         try {
 
-            RpcMessageChannelHandler handler = channelFuture
+            RpcClientHandler handler = channelFuture
                     .channel()
                     .pipeline()
-                    .get(RpcMessageChannelHandler.class);
+                    .get(RpcClientHandler.class);
 
             return message;
         }catch (Exception e){

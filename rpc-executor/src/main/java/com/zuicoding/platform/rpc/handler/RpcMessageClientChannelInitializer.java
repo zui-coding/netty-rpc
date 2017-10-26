@@ -20,7 +20,7 @@ public final class RpcMessageClientChannelInitializer
                 .addLast(new ObjectEncoder())
                 .addLast(new ObjectDecoder(Integer.MAX_VALUE,
                         ClassResolvers.cacheDisabled(null)))
-                .addLast((new RpcClientHanlder()))
+                .addLast((new RpcClientHandler()))
         ;
     }
 }
