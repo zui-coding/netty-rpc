@@ -1,8 +1,7 @@
 package com.zuicoding.platform.rpc.server.impl;
 
 import com.zuicoding.platform.rpc.common.exception.RpcException;
-import com.zuicoding.platform.rpc.handler.RpcHandler;
-import com.zuicoding.platform.rpc.handler.impl.DefaultRpcHandlerImpl;
+import com.zuicoding.platform.rpc.handler.RpcServerHandler;
 import com.zuicoding.platform.rpc.provider.Provider;
 import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -27,7 +26,7 @@ public class DefaultNettyRpcServer implements RpcServer {
     private EventLoopGroup bossGroup, workerGroup;
     private ServerBootstrap bootstrap;
     private ChannelFuture channelFuture;
-    private RpcHandler handler;
+    private ChannelHandler handler;
     private boolean isStart = false;
 
     public DefaultNettyRpcServer() {
@@ -54,13 +53,15 @@ public class DefaultNettyRpcServer implements RpcServer {
             bossGroup = new NioEventLoopGroup(bossThreads);
             workerGroup = new NioEventLoopGroup(workerThreads);
             bootstrap = new ServerBootstrap();
-            handler = new DefaultRpcHandlerImpl();
-            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+            handler = new RpcServerHandler();
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new ObjectEncoder())
+                            ch.pipeline()
+                                    .addLast(new ObjectEncoder())
                                     .addLast(new ObjectDecoder(Integer.MAX_VALUE,
                                             ClassResolvers.cacheDisabled(null)))
                             .addLast(handler);
@@ -101,7 +102,7 @@ public class DefaultNettyRpcServer implements RpcServer {
         if (!isStart){
             throw new RpcException("This server hasn't  started....");
         }
-        handler.registe(provider);
+       // handler.registe(provider);
     }
 
     public int getBossThreads() {

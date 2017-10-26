@@ -1,22 +1,17 @@
 package com.zuicoding.platform.rpc.consumer.impl;
 
-import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.RpcMessage;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.consumer.Client;
 import com.zuicoding.platform.rpc.handler.RpcHandler;
-import com.zuicoding.platform.rpc.handler.impl.DefaultRpcHandlerImpl;
+import com.zuicoding.platform.rpc.handler.RpcMessageClientChannelInitializer;
+import com.zuicoding.platform.rpc.handler.impl.RpcMessageChannelHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by Stephen.lin on 2017/9/25.
@@ -33,6 +28,7 @@ public class DefaultClient implements Client {
     private Bootstrap bootstrap;
     private ChannelFuture channelFuture;
     private RpcHandler handler;
+    private ChannelInitializer channelInitializer;
     public DefaultClient() {
     }
 
@@ -59,31 +55,26 @@ public class DefaultClient implements Client {
 
     @Override
     public void connect() {
+
+        doOpen();
+    }
+
+    private void doOpen(){
+        channelInitializer = new RpcMessageClientChannelInitializer();
         workerGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        handler = new DefaultRpcHandlerImpl();
+        handler = new RpcMessageChannelHandler();
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline()
-                                .addLast(new ObjectEncoder())
-                                .addLast(new ObjectDecoder(Integer.MAX_VALUE,
-                                        ClassResolvers.cacheDisabled(null)))
-                                .addLast(handler)
-                        ;
-                    }
-                });
+                .handler(channelInitializer);
         try {
             channelFuture = bootstrap.connect(server,port).syncUninterruptibly();
             logger.info("connnected [{}]:[{}] server success....",this.server,this.port);
         }catch (Exception e){
             throw new RpcException(e);
         }
-
     }
 
     @Override
@@ -100,18 +91,16 @@ public class DefaultClient implements Client {
     }
 
     @Override
-    public RpcCaller send(RpcCaller caller) {
-        final CountDownLatch latch = new CountDownLatch(1);
+    public RpcMessage send(RpcMessage message) {
+
         try {
 
-            channelFuture.channel().writeAndFlush(caller).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    latch.countDown();
-                }
-            });
-            latch.await();
-            return caller;
+            RpcMessageChannelHandler handler = channelFuture
+                    .channel()
+                    .pipeline()
+                    .get(RpcMessageChannelHandler.class);
+
+            return message;
         }catch (Exception e){
             throw new RpcException(e);
         }

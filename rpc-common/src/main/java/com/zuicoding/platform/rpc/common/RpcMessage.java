@@ -7,7 +7,7 @@ import java.io.Serializable;
  * <p>
  * Description :<p>rpc传输对象</p>
  */
-public class RpcCaller implements Serializable  {
+public class RpcMessage implements Serializable  {
     private static final long serialVersionUID = -8681715352602910337L;
 
     private long id;
@@ -22,22 +22,22 @@ public class RpcCaller implements Serializable  {
 
     private RpcState state = RpcState.SEND;
 
-    public RpcCaller() {
+    public RpcMessage() {
     }
 
-    public RpcCaller(String interfaces, String method, Object[] params, Object result) {
+    public RpcMessage(String interfaces, String method, Object[] params, Object result) {
         this.interfaces = interfaces;
         this.method = method;
         this.params = params;
         this.result = result;
     }
 
-    public RpcCaller(String interfaces, String method) {
+    public RpcMessage(String interfaces, String method) {
         this.interfaces = interfaces;
         this.method = method;
     }
 
-    public RpcCaller(String interfaces, String method, Object[] params) {
+    public RpcMessage(String interfaces, String method, Object[] params) {
         this.interfaces = interfaces;
         this.method = method;
         this.params = params;

@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc;
 
-import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.RpcMessage;
 
 /**
  * Created by Stephen.lin on 2017/9/25.
@@ -9,7 +9,7 @@ import com.zuicoding.platform.rpc.common.RpcCaller;
  */
 public interface RpcInvoker<T> {
 
-    T invoke(RpcCaller caller);
+    T invoke(RpcMessage caller);
 
     T bind(Class<T> clazz);
 

@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.provider.impl;
 
-import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.RpcMessage;
 import com.zuicoding.platform.rpc.common.RpcState;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.provider.Provider;
@@ -8,8 +8,6 @@ import com.zuicoding.platform.rpc.registry.Register;
 import com.zuicoding.platform.rpc.registry.RpcRegistry;
 
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Stephen.lin on 2017/9/25.
@@ -44,7 +42,7 @@ public class ProviderImpl implements Provider {
     }
 
     @Override
-    public RpcCaller invoke(RpcCaller caller) {
+    public RpcMessage invoke(RpcMessage caller) {
         try {
             Class clazz = Class.forName(interfaces);
             Class[] argClasses = null;

@@ -1,8 +1,6 @@
 package com.zuicoding.platform.rpc.protocol;
 
-import com.zuicoding.platform.rpc.common.RpcCaller;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
+import com.zuicoding.platform.rpc.common.RpcMessage;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
@@ -10,7 +8,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * <p>
  * Description :<p>讲对象转换成二进制</p>
  */
-public abstract class RpcEncoder extends MessageToByteEncoder<RpcCaller> {
+public abstract class RpcEncoder extends MessageToByteEncoder<RpcMessage> {
 
 
 }

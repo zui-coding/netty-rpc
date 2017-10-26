@@ -1,7 +1,7 @@
 package com.zuicoding.platform.rpc.consumer;
 
 import com.zuicoding.platform.rpc.RpcInvoker;
-import com.zuicoding.platform.rpc.common.RpcCaller;
+import com.zuicoding.platform.rpc.common.RpcMessage;
 import com.zuicoding.platform.rpc.consumer.impl.DefaultClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class JdkRpcInvoker<T>
                 new Class<?>[]{clazz},this);
     }
     @Override
-    public T  invoke(RpcCaller caller) {
+    public T  invoke(RpcMessage caller) {
         throw new UnsupportedOperationException();
     }
 
@@ -38,7 +38,7 @@ public class JdkRpcInvoker<T>
     public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         client.connect();
         if ("toString".equals(method.getName()) && (args == null || args.length == 0)) return null;
-        RpcCaller caller = new RpcCaller(clazz.getName(),method.getName(),args);
+        RpcMessage caller = new RpcMessage(clazz.getName(),method.getName(),args);
         client.send(caller);
         return caller.getResult();
     }
