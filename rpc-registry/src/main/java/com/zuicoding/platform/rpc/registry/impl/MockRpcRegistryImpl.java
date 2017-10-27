@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.registry.impl;
 
-import com.zuicoding.platform.rpc.registry.Register;
+import com.zuicoding.platform.rpc.common.Provider;
 import com.zuicoding.platform.rpc.registry.RpcRegistry;
 
 import java.util.Map;
@@ -13,10 +13,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MockRpcRegistryImpl implements RpcRegistry {
 
-    private Map<String,Register> localMap = new ConcurrentHashMap<>();
+    Map<String,Provider> map = new ConcurrentHashMap<>();
 
     @Override
-    public void registry(Register register) {
-        localMap.put(register.getIinterface(),register);
+    public void registe(Provider provider) {
+        map.put(provider.getInterfaceClass(),provider);
     }
+
+
 }

@@ -1,7 +1,7 @@
 package com.zuicoding.platform.rpc.handler;
 
 import com.zuicoding.platform.rpc.common.RpcMessage;
-import com.zuicoding.platform.rpc.provider.Provider;
+import com.zuicoding.platform.rpc.common.Provider;
 import io.netty.channel.ChannelHandler;
 
 /**

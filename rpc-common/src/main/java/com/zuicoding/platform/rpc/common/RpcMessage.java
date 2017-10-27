@@ -7,49 +7,43 @@ import java.io.Serializable;
  * <p>
  * Description :<p>rpc传输对象</p>
  */
-public class RpcMessage implements Serializable  {
+public class RpcMessage<T> implements Serializable {
     private static final long serialVersionUID = -8681715352602910337L;
 
     private long id;
     //调用的接口
-    private String interfaces;
+    private String interfaceClass;
     //调用的方法
     private String method;
     //方法依赖的参数
     private Object[] params;
     //方法返回的结果
-    private Object result;
+    private T result;
 
-    private RpcState state = RpcState.SEND;
+
 
     public RpcMessage() {
     }
 
-    public RpcMessage(String interfaces, String method, Object[] params, Object result) {
-        this.interfaces = interfaces;
-        this.method = method;
-        this.params = params;
-        this.result = result;
-    }
 
-    public RpcMessage(String interfaces, String method) {
-        this.interfaces = interfaces;
+    public RpcMessage(String interfaceClass, String method) {
+        this.interfaceClass = interfaceClass;
         this.method = method;
     }
 
-    public RpcMessage(String interfaces, String method, Object[] params) {
-        this.interfaces = interfaces;
+    public RpcMessage(String interfaceClass, String method, Object[] params) {
+        this.interfaceClass = interfaceClass;
         this.method = method;
         this.params = params;
     }
 
 
-    public String getInterfaces() {
-        return interfaces;
+    public String getInterfaceClass() {
+        return interfaceClass;
     }
 
-    public void setInterfaces(String interfaces) {
-        this.interfaces = interfaces;
+    public void setInterfaceClass(String interfaceClass) {
+        this.interfaceClass = interfaceClass;
     }
 
     public String getMethod() {
@@ -68,12 +62,8 @@ public class RpcMessage implements Serializable  {
         this.params = params;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
-    }
-
-    public void setResult(Object result) {
-        this.result = result;
     }
 
     public long getId() {
@@ -84,11 +74,10 @@ public class RpcMessage implements Serializable  {
         this.id = id;
     }
 
-    public RpcState getState() {
-        return state;
+    public void setResult(T result) {
+        this.result = result;
     }
 
-    public void setState(RpcState state) {
-        this.state = state == null ? RpcState.SEND : state;
-    }
+
 }
+

@@ -1,8 +1,10 @@
 package com.zuicoding.platform.rpc.consumer.impl;
 
+import com.zuicoding.platform.rpc.RpcInvoker;
 import com.zuicoding.platform.rpc.common.RpcMessage;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.consumer.Client;
+import com.zuicoding.platform.rpc.consumer.JdkRpcInvoker;
 import com.zuicoding.platform.rpc.handler.RpcClientHandler;
 import com.zuicoding.platform.rpc.handler.RpcMessageClientChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
@@ -30,7 +32,11 @@ public class DefaultClient implements Client {
     private Bootstrap bootstrap;
     private ChannelFuture channelFuture;
     private ChannelInitializer channelInitializer;
-    public DefaultClient() {
+
+    private RpcInvoker invoker;
+    private Class clazz;
+    public DefaultClient(Class clazz) {
+        this.clazz = clazz;
     }
 
     public DefaultClient(String server, int port) {
@@ -61,6 +67,7 @@ public class DefaultClient implements Client {
     }
 
     private void doOpen(){
+        invoker = new JdkRpcInvoker(clazz);
         channelInitializer = new RpcMessageClientChannelInitializer();
         workerGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();

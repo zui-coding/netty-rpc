@@ -2,7 +2,7 @@ package com.zuicoding.platform.rpc.server.impl;
 
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.handler.RpcServerHandler;
-import com.zuicoding.platform.rpc.provider.Provider;
+import com.zuicoding.platform.rpc.common.Provider;
 import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -97,13 +97,6 @@ public class DefaultNettyRpcServer implements RpcServer {
 
     }
 
-    @Override
-    public void addProvider(Provider provider) {
-        if (!isStart){
-            throw new RpcException("This server hasn't  started....");
-        }
-       // handler.registe(provider);
-    }
 
     public int getBossThreads() {
         return bossThreads;
