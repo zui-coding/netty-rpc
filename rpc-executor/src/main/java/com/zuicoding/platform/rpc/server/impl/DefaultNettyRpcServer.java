@@ -70,7 +70,7 @@ public class DefaultNettyRpcServer implements RpcServer {
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             channelFuture =  bootstrap.bind(port).sync();
-            logger.info("server {}:{} started success...");
+            logger.info("server {} started success...",this.port);
             logger.info("boss thread count:{},worker thread count:{}...",this.bossThreads,this.workerThreads);
             isStart = true;
         }catch (Exception e){

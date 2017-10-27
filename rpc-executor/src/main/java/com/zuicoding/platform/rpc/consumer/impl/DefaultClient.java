@@ -99,7 +99,7 @@ public class DefaultClient implements Client {
                     .channel()
                     .pipeline()
                     .get(RpcClientHandler.class);
-
+            handler.send(message);
             return message;
         }catch (Exception e){
             throw new RpcException(e);
