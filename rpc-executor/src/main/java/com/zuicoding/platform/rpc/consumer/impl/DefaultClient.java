@@ -1,12 +1,11 @@
 package com.zuicoding.platform.rpc.consumer.impl;
 
-import com.zuicoding.platform.rpc.RpcInvoker;
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
 import com.zuicoding.platform.rpc.consumer.Client;
-import com.zuicoding.platform.rpc.consumer.JdkRpcInvoker;
 import com.zuicoding.platform.rpc.handler.RpcClientHandler;
 import com.zuicoding.platform.rpc.handler.RpcMessageClientChannelInitializer;
+import com.zuicoding.platform.rpc.protocol.URL;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -26,39 +25,17 @@ public class DefaultClient implements Client {
 
     private Logger logger = LoggerFactory.getLogger(DefaultClient.class);
 
-    private String server = "127.0.0.1";
-    private int port = 2017;
+    private URL url;
     private EventLoopGroup workerGroup ;
     private Bootstrap bootstrap;
     private ChannelFuture channelFuture;
     private ChannelInitializer channelInitializer;
 
-    private RpcInvoker invoker;
-    private Class clazz;
-    public DefaultClient(Class clazz) {
-        this.clazz = clazz;
+    public DefaultClient(URL url) {
+        this.url = url;
     }
 
-    public DefaultClient(String server, int port) {
-        this.server = server;
-        this.port = port;
-    }
 
-    public String getServer() {
-        return server;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
 
     @Override
     public void connect() {
@@ -67,7 +44,6 @@ public class DefaultClient implements Client {
     }
 
     private void doOpen(){
-        invoker = new JdkRpcInvoker(clazz);
         channelInitializer = new RpcMessageClientChannelInitializer();
         workerGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
@@ -77,8 +53,10 @@ public class DefaultClient implements Client {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .handler(channelInitializer);
         try {
-            channelFuture = bootstrap.connect(server,port).syncUninterruptibly();
-            logger.info("connnected [{}]:[{}] server success....",this.server,this.port);
+            channelFuture = bootstrap.connect(url.getHost(),
+                    url.getPort()).syncUninterruptibly();
+            logger.info("connnected [{}]:[{}] server success....",this.url.getHost(),
+                    this.url.getPort());
         }catch (Exception e){
             throw new RpcException(e);
         }
@@ -91,14 +69,14 @@ public class DefaultClient implements Client {
                 channelFuture.channel().closeFuture().sync();
             }
             workerGroup.shutdownGracefully();
-            logger.info("close {}:{} success...",this.port,this.port);
+            logger.info("close {}:{} success...",this.url.getHost(),this.url.getPort());
         }catch (Exception e){
             throw new RpcException(e);
         }
     }
 
     @Override
-    public RpcMessage send(RpcMessage message) {
+    public RpcRequest send(RpcRequest message) {
 
         try {
 

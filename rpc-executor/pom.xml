@@ -20,6 +20,11 @@
     <dependencies>
         <dependency>
             <groupId>com.zuicoding.platform</groupId>
+            <artifactId>rpc-protocol</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zuicoding.platform</groupId>
             <artifactId>rpc-registry</artifactId>
             <version>${project.version}</version>
         </dependency>

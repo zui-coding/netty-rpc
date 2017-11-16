@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.handler;
 
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.provider.ProviderInvoker;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,9 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: <p></p>
  */
 @ChannelHandler.Sharable
-public class RpcServerHandler extends ChannelInboundHandlerAdapter {
+public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 
-    private Logger logger = LoggerFactory.getLogger(RpcServerHandler.class);
+    private Logger logger = LoggerFactory.getLogger(RpcServerChannelHandler.class);
     Map<String,ProviderInvoker> refMap = new ConcurrentHashMap<>();
 
 
@@ -30,10 +30,10 @@ public class RpcServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (!(msg instanceof RpcMessage)){
+        if (!(msg instanceof RpcRequest)){
             return;
         }
-        RpcMessage message = (RpcMessage)msg;
+        RpcRequest message = (RpcRequest)msg;
         ProviderInvoker invoker = refMap.get(message.getInterfaceClass());
         if (invoker == null){
             return;
@@ -49,5 +49,10 @@ public class RpcServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.error("",cause);
         ctx.close();
+    }
+
+    public void refreshLocalRegister(Map<String,ProviderInvoker> map){
+        refMap.clear();
+        refMap.putAll(map);
     }
 }

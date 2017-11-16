@@ -2,7 +2,7 @@ package com.zuicoding.platform.rpc.provider;
 
 import com.zuicoding.platform.rpc.RpcInvoker;
 import com.zuicoding.platform.rpc.common.Provider;
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class ProviderInvoker implements RpcInvoker {
     }
 
     @Override
-    public Object invoke(RpcMessage message) {
+    public Object invoke(RpcRequest message) {
         try {
             Class clazz = Class.forName(message.getInterfaceClass());
             Class[] argClasses = null;

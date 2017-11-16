@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.protocol;
 
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
 /**
@@ -8,7 +8,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
  * <p>
  * Description :<p></p>
  */
-public abstract class RpcDecoder extends MessageToMessageDecoder<RpcMessage> {
+public abstract class RpcDecoder extends MessageToMessageDecoder<RpcRequest> {
 
 
 

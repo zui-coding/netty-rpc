@@ -1,8 +1,7 @@
 package com.zuicoding.platform.rpc.server.impl;
 
 import com.zuicoding.platform.rpc.common.exception.RpcException;
-import com.zuicoding.platform.rpc.handler.RpcServerHandler;
-import com.zuicoding.platform.rpc.common.Provider;
+import com.zuicoding.platform.rpc.handler.RpcServerChannelHandler;
 import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -53,7 +52,7 @@ public class DefaultNettyRpcServer implements RpcServer {
             bossGroup = new NioEventLoopGroup(bossThreads);
             workerGroup = new NioEventLoopGroup(workerThreads);
             bootstrap = new ServerBootstrap();
-            handler = new RpcServerHandler();
+            handler = new RpcServerChannelHandler();
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -96,6 +95,7 @@ public class DefaultNettyRpcServer implements RpcServer {
         }
 
     }
+
 
 
     public int getBossThreads() {

@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.protocol.serialization.impl;
 
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.protocol.serialization.ISerializationer;
 
 /**
@@ -8,7 +8,7 @@ import com.zuicoding.platform.rpc.protocol.serialization.ISerializationer;
  * <p>
  * Description :<p>default use jdk</p>
  */
-public class JdkSerializationer implements ISerializationer<RpcMessage> {
+public class JdkSerializationer implements ISerializationer<RpcRequest> {
 
 
 
@@ -18,7 +18,7 @@ public class JdkSerializationer implements ISerializationer<RpcMessage> {
     }
 
     @Override
-    public RpcMessage deserialize(byte[] data, Class<RpcMessage> clazz) {
+    public RpcRequest deserialize(byte[] data, Class<RpcRequest> clazz) {
         return null;
     }
 }

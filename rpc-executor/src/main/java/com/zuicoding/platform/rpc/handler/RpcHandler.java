@@ -1,6 +1,6 @@
 package com.zuicoding.platform.rpc.handler;
 
-import com.zuicoding.platform.rpc.common.RpcMessage;
+import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.common.Provider;
 import io.netty.channel.ChannelHandler;
 
@@ -13,6 +13,6 @@ public interface RpcHandler extends ChannelHandler {
 
     void registe(Provider provider);
 
-    void send(RpcMessage message);
+    void send(RpcRequest message);
 
 }
