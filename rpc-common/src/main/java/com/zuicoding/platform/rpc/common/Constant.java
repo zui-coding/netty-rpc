@@ -19,4 +19,7 @@ public class Constant {
     public static final String PARAM_SEPARATOR = "&";
 
     public static final String PARAM_VALUE_SEPARATOR = "=";
+
+    public static final String PARAM_MAXTOTAL_NAME = "maxTotal";
+    public static final String PARAM_MAXIDLE_NAME = "maxIdle";
 }
