@@ -1,7 +1,11 @@
 package com.zuicoding.platform.rpc.handler;
 
 import com.zuicoding.platform.rpc.common.RpcRequest;
+import com.zuicoding.platform.rpc.protocol.URL;
+import com.zuicoding.platform.rpc.protocol.URLUtils;
 import com.zuicoding.platform.rpc.provider.ProviderInvoker;
+import com.zuicoding.platform.rpc.registry.RpcRegistry;
+import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -10,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author : Created by <a href="mailto:stephen.linicoding@gmail.com">Stephen.lin</a> on 2017/10/25
@@ -19,8 +24,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(RpcServerChannelHandler.class);
-    Map<String,ProviderInvoker> refMap = new ConcurrentHashMap<>();
 
+    private RpcRegistry registry;
+
+    private ThreadPoolExecutor poolExecutor;
+
+    public RpcServerChannelHandler(
+                                   ThreadPoolExecutor poolExecutor) {
+        this.poolExecutor = poolExecutor;
+    }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
@@ -29,19 +41,28 @@ public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx,final Object msg) throws Exception {
         if (!(msg instanceof RpcRequest)){
             return;
         }
-        RpcRequest message = (RpcRequest)msg;
-        ProviderInvoker invoker = refMap.get(message.getInterfaceClass());
-        if (invoker == null){
-            return;
-        }
+        poolExecutor.submit(new Runnable() {
+            @Override
+            public void run() {
+                RpcRequest request = (RpcRequest)msg;
+                URL url = URLUtils.format(request);
 
-        Object result = invoker.invoke(message);
-        message.setResult(result);
-        ctx.writeAndFlush(message);
+                //refMap.get(url).invoke(request);
+            }
+        });
+
+//        RpcInvoker invoker = refMap.get(.getInterfaceName());
+//        if (invoker == null){
+//            return;
+//        }
+//
+//        Object result = invoker.invoke(message);
+//       // message.set(result);
+//        ctx.writeAndFlush(message);
 
     }
 
@@ -51,8 +72,13 @@ public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
+    public void setRegistry(RpcRegistry registry) {
+
+        this.registry = registry;
+    }
+
     public void refreshLocalRegister(Map<String,ProviderInvoker> map){
-        refMap.clear();
-        refMap.putAll(map);
+        //refMap.clear();
+        //refMap.putAll(map);
     }
 }

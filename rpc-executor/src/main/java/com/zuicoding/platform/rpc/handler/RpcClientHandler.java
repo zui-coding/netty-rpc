@@ -2,7 +2,6 @@ package com.zuicoding.platform.rpc.handler;
 
 import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.consumer.Client;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -27,7 +26,7 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
-        //this.channel = ctx.channel();
+
     }
 
     @Override
@@ -40,7 +39,7 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
         super.exceptionCaught(ctx, cause);
     }
 
-    public void send(RpcRequest message){
-
+    public void send(RpcRequest request){
+        client.send(request);
     }
 }

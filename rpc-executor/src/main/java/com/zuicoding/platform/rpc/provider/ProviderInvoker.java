@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 
 /**
- * @author : Created by <a href="mailto:stephen.linicoding@gmail.com">Stepn.lin</a> on 2017/10/27
+ * Created by <a href="mailto:stephen.linicoding@gmail.com">Stepn.lin</a> on 2017/10/27
  * @description: <p></p>
  */
 public class ProviderInvoker implements RpcInvoker {
@@ -23,21 +23,24 @@ public class ProviderInvoker implements RpcInvoker {
     }
 
     @Override
-    public Object invoke(RpcRequest message) {
+    public Object invoke(RpcRequest request) {
         try {
-            Class clazz = Class.forName(message.getInterfaceClass());
+            Class clazz = Class.forName(request.getInterfaceName());
             Class[] argClasses = null;
-            if (message.getParams() != null){
-                Object[] params = message.getParams();
+            if (request.getParams() != null){
+                Object[] params = request.getParams();
                 int len = params.length;
                 argClasses = new  Class[len];
                 for (int i = 0; i < len; i++) {
                     argClasses[i] = params[i].getClass();
                 }
             }
-            Method method= clazz.getMethod(message.getMethod(),argClasses);
-            Object result = method.invoke(this.provider.getRef(),message.getParams());
-            message.setResult(result);
+            Method method= clazz.getMethod(request.getMethodName(),argClasses);
+            if (method == null){
+                return null;
+            }
+            Object result = method.invoke(this.provider.getImplRef(),request.getParams());
+            return result;
         }catch (Exception e){
 
         }

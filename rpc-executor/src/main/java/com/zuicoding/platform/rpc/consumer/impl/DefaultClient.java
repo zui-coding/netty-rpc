@@ -133,8 +133,19 @@ public class DefaultClient extends AbstractPoolClient {
         ChannelFuture  future = channel.writeAndFlush(request);
         boolean isDone = future.awaitUninterruptibly().isDone();
         if(isDone && future.isSuccess()){
+            future.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if (future.isDone() && future.isSuccess()){
 
+                    }
+                }
+            });
+
+            return  new RpcResponse();
         }
+
+        future.cancel(true);
         return null;
 
     }

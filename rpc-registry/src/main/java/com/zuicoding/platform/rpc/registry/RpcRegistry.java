@@ -16,4 +16,6 @@ public interface RpcRegistry {
      * @param provider
      */
     void registe(Provider provider);
+
+    Provider getProvider(String key);
 }

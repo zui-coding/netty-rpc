@@ -1,7 +1,7 @@
 package com.zuicoding.platform.server;
 
 import com.zuicoding.platform.rpc.server.RpcServer;
-import com.zuicoding.platform.rpc.server.impl.DefaultNettyRpcServer;
+import com.zuicoding.platform.rpc.server.impl.DefaultNettyServer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class ServerTester {
 
     @Before
     public void init(){
-        server = new DefaultNettyRpcServer();
+        server = new DefaultNettyServer();
     }
 
     @Test

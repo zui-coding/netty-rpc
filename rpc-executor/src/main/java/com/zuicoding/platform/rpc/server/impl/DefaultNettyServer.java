@@ -1,7 +1,10 @@
 package com.zuicoding.platform.rpc.server.impl;
 
 import com.zuicoding.platform.rpc.common.exception.RpcException;
+import com.zuicoding.platform.rpc.common.utils.RpcUtils;
 import com.zuicoding.platform.rpc.handler.RpcServerChannelHandler;
+import com.zuicoding.platform.rpc.pool.DefaultThreadFactory;
+import com.zuicoding.platform.rpc.pool.RpcThreadPoolExecutor;
 import com.zuicoding.platform.rpc.server.RpcServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -14,34 +17,52 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Created by Stephen.lin on 2017/9/25.
  * <p>
  * Description :<p>默认是netty实现</p>
  */
-public class DefaultNettyRpcServer implements RpcServer {
-    private Logger logger = LoggerFactory.getLogger(DefaultNettyRpcServer.class);
-    private int bossThreads, workerThreads, port = 2017;
+public class DefaultNettyServer implements RpcServer {
+    private Logger logger = LoggerFactory.getLogger(DefaultNettyServer.class);
+    private int bossThreads,
+            workerThreads,
+            port = 2017,
+            poolMinSize = 100,
+            poolMaxSize = 200;
     private EventLoopGroup bossGroup, workerGroup;
     private ServerBootstrap bootstrap;
     private ChannelFuture channelFuture;
     private ChannelHandler handler;
     private boolean isStart = false;
 
-    public DefaultNettyRpcServer() {
+    private ThreadPoolExecutor poolExecutor;
+
+    public DefaultNettyServer() {
     }
 
-    public DefaultNettyRpcServer(int port) {
+    public DefaultNettyServer(int port) {
         this.port = port;
     }
 
-    public DefaultNettyRpcServer(int bossThreads, int workerThreads, int port) {
+    public DefaultNettyServer(int bossThreads, int workerThreads, int port) {
         this.bossThreads = bossThreads;
         this.workerThreads = workerThreads;
         this.port = port;
     }
 
-    public DefaultNettyRpcServer(int bossThreads, int workerThreads) {
+    public DefaultNettyServer(int bossThreads, int workerThreads, int poolMinSize, int poolMaxSize) {
+        this.bossThreads = bossThreads;
+        this.workerThreads = workerThreads;
+        this.poolMinSize = poolMinSize;
+        this.poolMaxSize = poolMaxSize;
+    }
+
+    public DefaultNettyServer(int bossThreads, int workerThreads) {
         this.bossThreads = bossThreads;
         this.workerThreads = workerThreads;
     }
@@ -49,10 +70,12 @@ public class DefaultNettyRpcServer implements RpcServer {
     @Override
     public void start() {
         try {
+            poolExecutor = new RpcThreadPoolExecutor(poolMaxSize,
+                    poolMaxSize, new DefaultThreadFactory("rpc-"+ RpcUtils.getLocalAddress() + ":"+this.port));
             bossGroup = new NioEventLoopGroup(bossThreads);
             workerGroup = new NioEventLoopGroup(workerThreads);
             bootstrap = new ServerBootstrap();
-            handler = new RpcServerChannelHandler();
+            handler = new RpcServerChannelHandler(poolExecutor);
             bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {

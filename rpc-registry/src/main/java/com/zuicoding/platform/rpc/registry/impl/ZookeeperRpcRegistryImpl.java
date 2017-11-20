@@ -15,4 +15,9 @@ public class ZookeeperRpcRegistryImpl implements RpcRegistry {
     public void registe(Provider provider) {
 
     }
+
+    @Override
+    public Provider getProvider(String key) {
+        return null;
+    }
 }

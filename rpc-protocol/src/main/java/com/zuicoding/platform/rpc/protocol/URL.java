@@ -17,7 +17,7 @@ public class URL {
     /**
      * 默认协议rpc
      */
-    private String protocol = "rpc";
+    private String protocol = Constant.DEFAULT_PROTOCOL;
 
     private String host = "127.0.0.1";
 
@@ -113,6 +113,15 @@ public class URL {
         }
         checkValue("param name",name);
         this.params.put(name,String.valueOf(value));
+        return this;
+    }
+
+    public URL addParams(Map<String,String> params){
+        if (params != null){
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                addParam(entry.getKey(),entry.getValue());
+            }
+        }
         return this;
     }
 

@@ -9,7 +9,7 @@ import com.zuicoding.platform.rpc.common.RpcRequest;
  */
 public interface RpcInvoker<T> {
 
-    T invoke(RpcRequest message);
+    T invoke(RpcRequest request);
 
 
 }
