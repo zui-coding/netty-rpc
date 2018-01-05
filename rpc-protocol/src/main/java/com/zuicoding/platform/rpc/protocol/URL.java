@@ -188,6 +188,10 @@ public class URL {
         return url.toString();
     }
 
+    public String getAddress(){
+        return this.getHost() + ":" + this.getPort();
+    }
+
     public static URL parse(String url){
         if (url == null || url.trim().length() == 0){
             throw new NullPointerException("url is empty");

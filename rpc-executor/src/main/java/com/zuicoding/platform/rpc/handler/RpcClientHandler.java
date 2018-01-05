@@ -39,7 +39,13 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
         super.exceptionCaught(ctx, cause);
     }
 
-    public void send(RpcRequest request){
-        client.send(request);
+    public void send(final RpcRequest request){
+        threadPoolExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                client.send(request);
+            }
+        });
+
     }
 }

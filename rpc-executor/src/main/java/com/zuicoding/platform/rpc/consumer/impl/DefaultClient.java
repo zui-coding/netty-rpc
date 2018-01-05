@@ -123,7 +123,6 @@ public class DefaultClient extends AbstractPoolClient {
             client = pool.borrowObject();
             return client.send(request);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RpcException(e);
         }
     }
