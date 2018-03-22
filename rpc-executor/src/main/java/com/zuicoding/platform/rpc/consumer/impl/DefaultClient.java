@@ -95,7 +95,7 @@ public class DefaultClient extends AbstractPoolClient {
             channelFuture = bootstrap.connect(url.getHost(),
                     url.getPort()).syncUninterruptibly();
             channel = channelFuture.channel();
-            logger.info("connnected [{}]:[{}] server success....",this.url.getHost(),
+            logger.info("connnected [{}]:[{}] service success....",this.url.getHost(),
                     this.url.getPort());
         }catch (Exception e){
             throw new RpcException(e);
