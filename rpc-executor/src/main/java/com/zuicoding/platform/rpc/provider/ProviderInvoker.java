@@ -3,6 +3,8 @@ package com.zuicoding.platform.rpc.provider;
 import com.zuicoding.platform.rpc.RpcInvoker;
 import com.zuicoding.platform.rpc.common.Provider;
 import com.zuicoding.platform.rpc.common.RpcRequest;
+import com.zuicoding.platform.rpc.common.RpcResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,8 @@ public class ProviderInvoker implements RpcInvoker {
     }
 
     @Override
-    public Object invoke(RpcRequest request) {
+    public RpcResponse invoke(RpcRequest request) {
+        RpcResponse response = new RpcResponse();
         try {
             Class clazz = Class.forName(request.getInterfaceName());
             Class[] argClasses = null;
@@ -40,12 +43,13 @@ public class ProviderInvoker implements RpcInvoker {
                 return null;
             }
             Object result = method.invoke(this.provider.getImplRef(),request.getParams());
-            return result;
+            response.setRequestId(request.getRequestId());
+            return response;
         }catch (Exception e){
-
+            response.setException(e);
         }
 
-        return null;
+        return response;
     }
 
     public Provider getProvider() {

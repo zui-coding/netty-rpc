@@ -12,7 +12,7 @@ import java.util.Map;
 public class RpcRequest implements Serializable {
     private static final long serialVersionUID = -8681715352602910337L;
 
-    private long requestId;
+    private String requestId;
     //调用的接口
     private String interfaceName;
     //调用的方法
@@ -31,11 +31,11 @@ public class RpcRequest implements Serializable {
         this.params = params;
     }
 
-    public long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

@@ -19,8 +19,8 @@ public final class RpcMessageClientChannelInitializer
         ch.pipeline()
                 .addLast(new ObjectEncoder())
                 .addLast(new ObjectDecoder(Integer.MAX_VALUE,
-                        ClassResolvers.cacheDisabled(null)))
-                .addLast((new RpcClientHandler()))
-        ;
+                        ClassResolvers.cacheDisabled(null)));
+                //.addLast((new RpcClientHandler()));
+
     }
 }

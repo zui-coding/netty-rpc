@@ -1,11 +1,11 @@
 package com.zuicoding.platform.rpc.handler;
 
-import com.zuicoding.platform.rpc.common.RpcRequest;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import com.zuicoding.platform.rpc.consumer.Client;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author : Created by <a href="mailto:stephen.linicoding@gmail.com">Stephen.lin</a> on 2017/10/25
@@ -39,13 +39,7 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
         super.exceptionCaught(ctx, cause);
     }
 
-    public void send(final RpcRequest request){
-        threadPoolExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                client.send(request);
-            }
-        });
 
-    }
+
+
 }

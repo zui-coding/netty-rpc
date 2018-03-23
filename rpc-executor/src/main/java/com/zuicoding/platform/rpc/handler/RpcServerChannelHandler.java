@@ -55,14 +55,6 @@ public class RpcServerChannelHandler extends ChannelInboundHandlerAdapter {
             }
         });
 
-//        RpcInvoker invoker = refMap.get(.getInterfaceName());
-//        if (invoker == null){
-//            return;
-//        }
-//
-//        Object result = invoker.invoke(message);
-//       // message.set(result);
-//        ctx.writeAndFlush(message);
 
     }
 

@@ -1,7 +1,6 @@
 package com.zuicoding.platform.rpc.registry;
 
-
-import com.zuicoding.platform.rpc.common.Provider;
+import com.zuicoding.platform.rpc.protocol.URL;
 
 /**
  * Created by Stephen.lin on 2017/9/25.
@@ -10,12 +9,13 @@ import com.zuicoding.platform.rpc.common.Provider;
  */
 public interface RpcRegistry {
 
-
     /**
-     * 将provider 注册到 注册中心里
-     * @param provider
+     * 需要注册的url
+     * @param url
      */
-    void registe(Provider provider);
+    void registe(URL url);
 
-    Provider getProvider(String key);
+    void subscribe(URL url,NotifyListener notifyListener);
+
+
 }

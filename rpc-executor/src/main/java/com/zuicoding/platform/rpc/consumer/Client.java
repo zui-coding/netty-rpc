@@ -1,5 +1,6 @@
 package com.zuicoding.platform.rpc.consumer;
 
+import com.zuicoding.platform.rpc.RpcInvoker;
 import com.zuicoding.platform.rpc.common.RpcRequest;
 import com.zuicoding.platform.rpc.common.RpcResponse;
 
@@ -8,10 +9,8 @@ import com.zuicoding.platform.rpc.common.RpcResponse;
  * <p>
  * Description :<p></p>
  */
-public interface Client {
+public interface Client extends RpcInvoker {
 
-    void connect();
-    void close();
     RpcResponse send(RpcRequest request);
     RpcResponse send(RpcRequest request,boolean async);
 }

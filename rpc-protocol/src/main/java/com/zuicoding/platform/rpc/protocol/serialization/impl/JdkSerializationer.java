@@ -1,6 +1,11 @@
 package com.zuicoding.platform.rpc.protocol.serialization.impl;
 
-import com.zuicoding.platform.rpc.common.RpcRequest;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import com.zuicoding.platform.rpc.protocol.serialization.ISerializationer;
 
 /**
@@ -8,17 +13,30 @@ import com.zuicoding.platform.rpc.protocol.serialization.ISerializationer;
  * <p>
  * Description :<p>default use jdk</p>
  */
-public class JdkSerializationer implements ISerializationer<RpcRequest> {
+public class JdkSerializationer implements ISerializationer {
 
 
 
     @Override
-    public <T> byte[] serialize(T object) {
-        return null;
+    public  byte[] serialize(Object object) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(object);
+        oos.flush();
+        baos.flush();
+        oos.close();
+        baos.close();
+        return baos.toByteArray();
     }
 
     @Override
-    public RpcRequest deserialize(byte[] data, Class<RpcRequest> clazz) {
-        return null;
+    public <T> T deserialize(byte[] data,Class<T> klazz) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(data);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Object o = ois.readObject();
+        ois.close();
+        bais.close();
+
+        return (T) o;
     }
 }

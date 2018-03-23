@@ -26,7 +26,7 @@ public class RpcThreadPoolExecutor extends ThreadPoolExecutor {
                                  ThreadFactory threadFactory){
         super(minPoolSize,maxPoolSzie,DEFAULT_MAX_IDLE_TIME,
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingDeque<Runnable>(),
+                new LinkedBlockingDeque<Runnable>(maxPoolSzie),
                 threadFactory);
     }
 }

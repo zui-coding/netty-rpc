@@ -12,19 +12,19 @@ import java.util.Map;
 public class RpcResponse implements Serializable {
     private static final long serialVersionUID = -6930609441560036391L;
 
-    private Object value;
+    private Object result;
     private Exception exception;
-    private long requestId;
+    private String requestId;
     private long processTime;
     private int timeout;
     private Map<String, String> attachments;
 
-    public Object getValue() {
-        return value;
+    public Object getResult() {
+        return result;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setResult(Object result) {
+        this.result = result;
     }
 
     public Exception getException() {
@@ -35,11 +35,11 @@ public class RpcResponse implements Serializable {
         this.exception = exception;
     }
 
-    public long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 
@@ -70,7 +70,7 @@ public class RpcResponse implements Serializable {
     @Override
     public String toString() {
         return "RpcResponse{" +
-                "value=" + value +
+                "value=" + result +
                 ", exception=" + exception +
                 ", requestId=" + requestId +
                 ", processTime=" + processTime +

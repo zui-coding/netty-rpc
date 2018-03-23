@@ -48,6 +48,8 @@ public class URL {
         this.queryStr = queryStr;
     }
 
+
+
     public String getProtocol() {
         return protocol;
     }
@@ -265,7 +267,11 @@ public class URL {
 
         return _url;
 
+    }
 
+    public static URL valueOf(String url) {
+
+        return parse(url);
     }
 
     public String getParamVal(String name){
@@ -275,6 +281,13 @@ public class URL {
     public Integer getIntParamVal(String name){
         if(this.params == null) return null;
         return Integer.valueOf(this.params.get(name));
+    }
+
+    public String getParamater(String name) {
+        if (name == null) {
+            return null;
+        }
+        return this.params.get(name);
     }
 
     public Long getLongParamVal(String name){
@@ -287,4 +300,6 @@ public class URL {
             throw new RpcException(String.format("IllegalArgument %s value : %s", name,value));
         }
     }
+
+
 }
