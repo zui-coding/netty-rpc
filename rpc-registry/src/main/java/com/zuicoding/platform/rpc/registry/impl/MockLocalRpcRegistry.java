@@ -1,11 +1,8 @@
 package com.zuicoding.platform.rpc.registry.impl;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.zuicoding.platform.rpc.common.Provider;
 import com.zuicoding.platform.rpc.protocol.URL;
 import com.zuicoding.platform.rpc.registry.NotifyListener;
 import com.zuicoding.platform.rpc.registry.RpcRegistry;

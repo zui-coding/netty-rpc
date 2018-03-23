@@ -7,9 +7,10 @@ import java.io.IOException;
  * <p>
  * Description :<p>序列化接口</p>
  */
-public interface ISerializationer {
+public interface Serializationer {
 
     byte[] serialize(Object object) throws IOException;
-    <T> T deserialize(byte[] data,Class<T> klazz) throws IOException, ClassNotFoundException;
+
+    <T> T deserialize(byte[] data, Class<T> klazz) throws IOException, ClassNotFoundException;
 
 }

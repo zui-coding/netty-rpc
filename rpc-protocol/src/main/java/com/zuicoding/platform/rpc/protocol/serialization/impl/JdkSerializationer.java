@@ -6,19 +6,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.zuicoding.platform.rpc.protocol.serialization.ISerializationer;
+import com.zuicoding.platform.rpc.protocol.serialization.Serializationer;
 
 /**
  * Created by Stephen.lin on 2017/9/21.
  * <p>
  * Description :<p>default use jdk</p>
  */
-public class JdkSerializationer implements ISerializationer {
-
-
+public class JdkSerializationer implements Serializationer {
 
     @Override
-    public  byte[] serialize(Object object) throws IOException {
+    public byte[] serialize(Object object) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(object);
@@ -30,7 +28,7 @@ public class JdkSerializationer implements ISerializationer {
     }
 
     @Override
-    public <T> T deserialize(byte[] data,Class<T> klazz) throws IOException, ClassNotFoundException {
+    public <T> T deserialize(byte[] data, Class<T> klazz) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         ObjectInputStream ois = new ObjectInputStream(bais);
         Object o = ois.readObject();

@@ -13,16 +13,14 @@ public class UrlTester {
     @Test
     public void testUrl(){
         URL url = new URL("localhost",9999,"com.zuicoding.platform.rpc.protocol.url.UrlTester");
-        url.addParam("timeout",6000).addParam("appName","test");
+        url.addParameter("timeout","6000").addParameter("appName","test");
         System.err.println(url);
-        String urlStr = "rpc://localhost:9999/com.zuicoding.platform.rpc.protocol.url.UrlTester?timeout=6000&appName=test";
-        URL u1 = URL.parse(urlStr);
+        String urlStr = "linrpc://localhost:9999/com.zuicoding.platform.rpc.protocol.url"
+                + ".UrlTester?timeout=6000&appName=test";
+        URL u1 = URL.valueOf(urlStr);
 
         System.err.println(url.equals(u1));
     }
 
-    @Test
-    public void testErrorUrl(){
-        URL url = URL.parse("http://www.baidu.com");
-    }
+
 }
