@@ -1,16 +1,15 @@
 
 package com.zuicoding.platform.rpc.executor.server;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zuicoding.platform.rpc.common.DefaultResponse;
+import com.zuicoding.platform.rpc.common.Request;
+import com.zuicoding.platform.rpc.common.Response;
 import com.zuicoding.platform.rpc.common.exception.RpcException;
-import com.zuicoding.platform.rpc.common.utils.CollectionUtils;
-import com.zuicoding.platform.rpc.executor.RpcRequest;
-import com.zuicoding.platform.rpc.executor.RpcResponse;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,7 +20,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * <p>
  * </p>
  */
-public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
+public class RpcServerHandler extends SimpleChannelInboundHandler<Request> {
 
     private Logger logger = LoggerFactory.getLogger(RpcServerHandler.class);
 
@@ -34,7 +33,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest request) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
         if (logger.isDebugEnabled()) {
             logger.debug("request info : {}",request);
         }
@@ -45,37 +44,27 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     }
 
-    private RpcResponse invoke(RpcRequest request) {
-        RpcResponse response = new RpcResponse(request.getId());
-        String interfaceClass = request.getInterfaceClass();
-        String methodName = request.getMethod();
-        Object[] parameters = request.getParameters();
-        Class[] parameterClasses = null;
-        if (CollectionUtils.isNotEmpty(parameters)) {
-            parameterClasses = new Class[parameters.length];
-            for (int i = 0; i < parameters.length; i++) {
-                if (parameters[i] == null) {
-                    parameterClasses[i] = null;
-                    continue;
-                }
-                parameterClasses[i] = parameters[i].getClass();
-            }
-        }
+    private Response invoke(Request request) {
+        Response response = new DefaultResponse(request.getRequestId());
+        String interfaceClass = request.getInterfaceName();
+        String methodName = request.getMethodName();
+        Object[] parameters = request.getArguments();
+
 
         Object ref = refMap.get(interfaceClass);
         if (ref == null ) {
-            response.setException(new RpcException(interfaceClass + " has't registed"));
+            //response.setException(new RpcException(interfaceClass + " has't registed"));
             return response;
         }
         Class refClass = ref.getClass();
         try {
-            Method method = refClass.getDeclaredMethod(methodName,parameterClasses);
-            Object result =  method.invoke(ref,parameters);
-            response.setResult(result);
+//            Method method = refClass.getDeclaredMethod(methodName,request.getParameterClasses());
+//            Object result =  method.invoke(ref,parameters);
+//            response.setResult(result);
             return response;
         }catch ( Exception e) {
             logger.error(e.getMessage(),e);
-            response.setException(e);
+            //response.setException(e);
             return response;
         }
 

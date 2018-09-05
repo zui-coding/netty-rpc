@@ -6,8 +6,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zuicoding.platform.rpc.executor.RpcRequest;
-import com.zuicoding.platform.rpc.executor.RpcResponse;
+import com.zuicoding.platform.rpc.common.Request;
+import com.zuicoding.platform.rpc.common.Response;
 import com.zuicoding.platform.rpc.executor.server.RpcServerHandler;
 import com.zuicoding.platform.rpc.executor.server.Server;
 import com.zuicoding.platform.rpc.protocol.RpcDecoder;
@@ -58,8 +58,8 @@ public class DefaultNettyServer implements Server {
                         protected void initChannel(SocketChannel sc) throws Exception {
                             sc.pipeline()
                                     //.addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
-                                    .addLast(new RpcDecoder(RpcRequest.class))
-                                    .addLast(new RpcEncoder(RpcResponse.class))
+                                    .addLast(new RpcDecoder(Request.class))
+                                    .addLast(new RpcEncoder(Response.class))
                                     .addLast(new RpcServerHandler(DefaultNettyServer.this.refMap));
                         }
                     })

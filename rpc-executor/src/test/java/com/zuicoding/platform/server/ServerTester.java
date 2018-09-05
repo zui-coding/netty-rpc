@@ -22,7 +22,7 @@ public class ServerTester implements ITester {
     public void init(){
         URL url = new URL();
         url.setHost("localhost");
-        url.setPort(9999);
+        url.setPort(8080);
         url.setPath("com.zuicoding.platform.server.ITester");
         server = new DefaultNettyServer(url,new HashMap<String, Object>(){
             {
