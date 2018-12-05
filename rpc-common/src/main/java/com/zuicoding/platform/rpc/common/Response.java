@@ -14,7 +14,7 @@ public interface Response extends Serializable {
 
     Response setId(String id);
 
-    String getId();
+    long getId();
 
     boolean hasException();
 

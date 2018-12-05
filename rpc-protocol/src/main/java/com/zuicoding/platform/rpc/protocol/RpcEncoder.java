@@ -1,6 +1,7 @@
 
 package com.zuicoding.platform.rpc.protocol;
 
+import com.zuicoding.platform.rpc.common.Request;
 import com.zuicoding.platform.rpc.protocol.serialization.Serializationer;
 import com.zuicoding.platform.rpc.protocol.serialization.impl.JdkSerializationer;
 
@@ -15,22 +16,19 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * rpc 自定义编码器
  * </p>
  */
-public class RpcEncoder extends MessageToByteEncoder {
+public class RpcEncoder extends MessageToByteEncoder<Request> {
 
-    private Class<?> encodeClass;
+
 
     private Serializationer serializationer;
 
-    public RpcEncoder(Class<?> encodeClass) {
-        this.encodeClass = encodeClass;
+    public RpcEncoder() {
         this.serializationer = new JdkSerializationer();
     }
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-        if (!encodeClass.isInstance(msg)) {
-            return;
-        }
+    protected void encode(ChannelHandlerContext ctx, Request msg, ByteBuf out) throws Exception {
+
         byte[] data = this.serializationer.serialize(msg);
         //先写4个字节的包的长度
         out.writeInt(data.length);

@@ -3,6 +3,7 @@ package com.zuicoding.platform.rpc.protocol;
 
 import java.util.List;
 
+import com.zuicoding.platform.rpc.common.Request;
 import com.zuicoding.platform.rpc.protocol.serialization.Serializationer;
 import com.zuicoding.platform.rpc.protocol.serialization.impl.JdkSerializationer;
 
@@ -21,12 +22,12 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 public class RpcDecoder extends ByteToMessageDecoder {
 
 
-    private Class<?> decodeClass;
+
 
     private Serializationer serializationer;
 
-    public RpcDecoder(Class<?> decodeClass) {
-        this.decodeClass = decodeClass;
+    public RpcDecoder() {
+
         serializationer = new JdkSerializationer();
     }
 
@@ -46,7 +47,7 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
         byte[] data = new byte[dataLength];
         in.readBytes(data);
-        Object o = serializationer.deserialize(data,this.decodeClass);
+        Object o = serializationer.deserialize(data, Request.class);
         out.add(o);
     }
 }

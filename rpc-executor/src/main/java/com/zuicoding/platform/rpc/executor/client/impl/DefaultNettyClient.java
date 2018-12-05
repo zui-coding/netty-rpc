@@ -1,14 +1,14 @@
 
 package com.zuicoding.platform.rpc.executor.client.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zuicoding.platform.rpc.common.UrlParamEnum;
 import com.zuicoding.platform.rpc.common.DefaultRpcThreadFactory;
 import com.zuicoding.platform.rpc.executor.client.AbstractClient;
-import com.zuicoding.platform.rpc.executor.client.ClientHandler;
+import com.zuicoding.platform.rpc.executor.client.ConsumerHandler;
+import com.zuicoding.platform.rpc.executor.client.ConsumerInitializer;
 import com.zuicoding.platform.rpc.protocol.RpcDecoder;
 import com.zuicoding.platform.rpc.protocol.RpcEncoder;
 import com.zuicoding.platform.rpc.protocol.URL;
@@ -62,16 +62,7 @@ public class DefaultNettyClient extends AbstractClient {
                     .option(ChannelOption.SO_KEEPALIVE, true)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) {
-                            //获取管道
-                            ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast("decoder", new RpcDecoder(Object.class));
-                            pipeline.addLast("encoder", new RpcEncoder(Object.class));
-                            pipeline.addLast("handler", new ClientHandler(DefaultNettyClient.this.url));
-                        }
-                    });
+                    .handler(new ConsumerInitializer());
 
             bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout);
 

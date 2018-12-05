@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.zuicoding.platform.rpc.common.Response;
 import com.zuicoding.platform.rpc.protocol.serialization.Serializationer;
 
 /**
@@ -28,13 +29,13 @@ public class JdkSerializationer implements Serializationer {
     }
 
     @Override
-    public <T> T deserialize(byte[] data, Class<T> klazz) throws IOException, ClassNotFoundException {
+    public <T> T deserialize(byte[] data, Class<T> clazz) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         ObjectInputStream ois = new ObjectInputStream(bais);
         Object o = ois.readObject();
         ois.close();
         bais.close();
 
-        return (T) o;
+        return (T)o;
     }
 }

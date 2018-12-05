@@ -13,7 +13,7 @@ import java.util.Map;
 public interface Request extends Serializable {
 
 
-    String getRequestId();
+    long getRequestId();
 
     Request setRequestId(String requestId);
 
