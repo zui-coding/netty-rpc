@@ -1,21 +1,27 @@
 
 package com.zuicoding.platform.rpc.executor.client.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zuicoding.platform.rpc.common.UrlParamEnum;
 import com.zuicoding.platform.rpc.common.DefaultRpcThreadFactory;
-import com.zuicoding.platform.rpc.executor.client.Client;
+import com.zuicoding.platform.rpc.executor.client.AbstractClient;
 import com.zuicoding.platform.rpc.executor.client.ClientHandler;
 import com.zuicoding.platform.rpc.protocol.RpcDecoder;
 import com.zuicoding.platform.rpc.protocol.RpcEncoder;
 import com.zuicoding.platform.rpc.protocol.URL;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -26,7 +32,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * <p>
  * </p>
  */
-public class DefaultNettyClient implements Client {
+public class DefaultNettyClient extends AbstractClient {
 
 
     private static Logger logger = LoggerFactory.getLogger(DefaultNettyClient.class);
@@ -37,28 +43,38 @@ public class DefaultNettyClient implements Client {
 
     private EventLoopGroup woker = null;
 
+    private int timeout;
+
     public DefaultNettyClient(URL url) {
         this.url = url;
+        timeout = url.getIntParameter(UrlParamEnum.TIMEOUT.getName(),
+                UrlParamEnum.TIMEOUT.getIntValue());
     }
 
-    @Override
+
     public boolean connect() {
         try {
             woker = new NioEventLoopGroup(Math.min(Runtime.getRuntime().availableProcessors() + 1, 32),
                     new DefaultRpcThreadFactory());
             bootstrap = new Bootstrap();
             bootstrap.group(woker)
-                    .channel(NioSocketChannel.class)
+                    .channel(Epoll.isAvailable() ? EpollSocketChannel.class : NioSocketChannel.class)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             //获取管道
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new RpcDecoder(Object.class));
-                            pipeline.addLast(new RpcEncoder(Object.class));
-                            pipeline.addLast(new ClientHandler(DefaultNettyClient.this.url));
+                            pipeline.addLast("decoder", new RpcDecoder(Object.class));
+                            pipeline.addLast("encoder", new RpcEncoder(Object.class));
+                            pipeline.addLast("handler", new ClientHandler(DefaultNettyClient.this.url));
                         }
                     });
+
+            bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout);
+
             ChannelFuture futrue = bootstrap.connect(url.getHost(), url.getPort()).sync();
 
             //等待客户端链路关闭

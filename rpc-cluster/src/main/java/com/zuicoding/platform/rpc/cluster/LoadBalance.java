@@ -8,4 +8,6 @@ package com.zuicoding.platform.rpc.cluster;
  * </p>
  */
 public interface LoadBalance {
+
+
 }

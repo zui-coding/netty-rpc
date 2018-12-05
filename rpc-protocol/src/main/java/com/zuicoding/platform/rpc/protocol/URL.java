@@ -231,6 +231,44 @@ public class URL {
         }
     }
 
+    public String getStringParameter(String name) {
+        if (this.parameters == null) {
+            return null;
+        }
+
+        return this.parameters.get(name);
+    }
+
+    public String getStringParameter(String name, String defVal) {
+        if (this.parameters == null) {
+            return defVal;
+        }
+
+        return this.parameters.getOrDefault(name, defVal);
+
+    }
+
+    public Integer getIntParameter(String name) {
+        String v = getStringParameter(name);
+        return v == null ? null : Integer.valueOf(v);
+    }
+
+    public Integer getIntParameter(String name, int defVal) {
+        String v = getStringParameter(name);
+        return v == null ? defVal : Integer.valueOf(v);
+    }
+
+    public Long getLongParameter(String name) {
+        String v = getStringParameter(name);
+
+        return v == null ? null : Long.valueOf(v);
+    }
+
+    public Long getLongParameter(String name, long defVal) {
+        String v = getStringParameter(name);
+
+        return v == null ? defVal : Long.valueOf(v);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

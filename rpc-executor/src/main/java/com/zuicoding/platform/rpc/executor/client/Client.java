@@ -9,5 +9,5 @@ package com.zuicoding.platform.rpc.executor.client;
  */
 public interface Client {
 
-    boolean connect();
+
 }
