@@ -1,26 +1,22 @@
 package com.zuicoding.platform.server;
 
-import com.zuicoding.platform.rpc.server.RpcServer;
-import com.zuicoding.platform.rpc.server.impl.DefaultNettyServer;
-import org.junit.Before;
 import org.junit.Test;
+
+import com.zuicoding.platform.rpc.executor.server.impl.DefaultNettyServer;
 
 /**
  * @author : Created by <a href="mailto:stephen.linicoding@gmail.com">Stephen.lin</a> on 2017/10/25
  * @description: <p></p>
  */
-public class ServerTester {
+public class ServerTester implements ITester {
 
-
-    private RpcServer server;
-
-    @Before
-    public void init(){
-        server = new DefaultNettyServer();
-    }
 
     @Test
-    public void start(){
-        server.start();
+    public void startServer() {
+        new DefaultNettyServer().start();
+    }
+
+    public static void main(String[] args) {
+        new DefaultNettyServer().start();
     }
 }
