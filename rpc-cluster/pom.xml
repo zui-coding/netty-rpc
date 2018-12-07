@@ -27,6 +27,10 @@
             <artifactId>rpc-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.zuicoding.platform</groupId>
+            <artifactId>rpc-executor</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

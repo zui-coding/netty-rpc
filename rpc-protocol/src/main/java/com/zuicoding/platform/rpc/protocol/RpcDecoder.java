@@ -22,8 +22,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 public class RpcDecoder extends ByteToMessageDecoder {
 
 
-
-
     private Serializationer serializationer;
 
     public RpcDecoder() {

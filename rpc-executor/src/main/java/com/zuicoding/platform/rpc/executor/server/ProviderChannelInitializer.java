@@ -1,9 +1,6 @@
 
 package com.zuicoding.platform.rpc.executor.server;
 
-import com.zuicoding.platform.rpc.common.Request;
-import com.zuicoding.platform.rpc.common.Response;
-import com.zuicoding.platform.rpc.executor.server.impl.DefaultNettyServer;
 import com.zuicoding.platform.rpc.protocol.RpcDecoder;
 import com.zuicoding.platform.rpc.protocol.RpcEncoder;
 
@@ -23,8 +20,8 @@ public class ProviderChannelInitializer extends ChannelInitializer<SocketChannel
     protected void initChannel(SocketChannel sc) throws Exception {
         sc.pipeline()
                 //.addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
-                .addLast(new RpcDecoder(Request.class))
-                .addLast(new RpcEncoder(Response.class))
+                .addLast(new RpcDecoder())
+                .addLast(new RpcEncoder())
                 .addLast(new ProviderServerHandler());
     }
 }

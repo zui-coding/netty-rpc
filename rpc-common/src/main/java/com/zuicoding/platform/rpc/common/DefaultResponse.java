@@ -23,9 +23,9 @@ public class DefaultResponse implements Response {
 
     private Map<String, Object> attachments;
 
-    private String id;
+    private long id;
 
-    public DefaultResponse(String id) {
+    public DefaultResponse(long id) {
         this.id = id;
     }
 
@@ -33,13 +33,13 @@ public class DefaultResponse implements Response {
     }
 
     @Override
-    public Response setId(String id) {
+    public Response setId(long id) {
         this.id = id;
         return this;
     }
 
     @Override
-    public String getId() {
+    public long getId() {
         return this.id;
     }
 

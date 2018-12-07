@@ -15,7 +15,7 @@ public interface Request extends Serializable {
 
     long getRequestId();
 
-    Request setRequestId(String requestId);
+    Request setRequestId(long requestId);
 
     Request setArguments(Object[] arguments);
     Object[] getArguments();

@@ -1,5 +1,4 @@
-
-package com.zuicoding.platform.rpc.cluster.random;
+package com.zuicoding.platform.rpc.cluster.loadbalance;
 
 import com.zuicoding.platform.rpc.cluster.LoadBalance;
 import com.zuicoding.platform.rpc.common.EndPoint;

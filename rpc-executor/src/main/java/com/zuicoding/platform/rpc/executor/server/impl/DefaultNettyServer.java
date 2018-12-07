@@ -98,5 +98,9 @@ public class DefaultNettyServer implements Server {
 
     }
 
+    public static void main(String[] args) {
+        new DefaultNettyServer(8080).start();
+    }
+
 
 }

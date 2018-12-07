@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.zuicoding.platform.rpc.common.Response;
 import com.zuicoding.platform.rpc.protocol.serialization.Serializationer;
 
 /**

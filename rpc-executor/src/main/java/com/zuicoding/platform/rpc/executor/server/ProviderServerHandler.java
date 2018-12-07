@@ -1,12 +1,17 @@
 
 package com.zuicoding.platform.rpc.executor.server;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zuicoding.platform.rpc.common.DefaultRpcThreadFactory;
 import com.zuicoding.platform.rpc.common.Request;
 import com.zuicoding.platform.rpc.common.Response;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.collection.LongObjectHashMap;
@@ -33,8 +38,11 @@ public class ProviderServerHandler extends SimpleChannelInboundHandler<Request> 
         }
     };
 
+    private Executor bizExecutor;
 
     public ProviderServerHandler() {
+
+        bizExecutor = Executors.newCachedThreadPool(new DefaultRpcThreadFactory());
     }
 
     @Override
@@ -52,12 +60,22 @@ public class ProviderServerHandler extends SimpleChannelInboundHandler<Request> 
 
     }
 
-
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+        if (logger.isDebugEnabled()) {
+            logger.debug("client channel {} connection", ctx.channel());
+        }
+    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
         logger.error("server exception",cause);
         ctx.close();
+    }
+
+    private void handlerMessage(Channel channel, Request request) {
+
     }
 }

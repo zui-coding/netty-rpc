@@ -17,7 +17,7 @@ public class DefaultRequest implements Request {
 
     private static final long serialVersionUID = -5524184375692631304L;
 
-    private String requestId;
+    private long requestId;
 
     private String interfaceName;
 
@@ -29,7 +29,7 @@ public class DefaultRequest implements Request {
 
     private Map<String, String> attachments;
 
-    public DefaultRequest setRequestId(String requestId) {
+    public Request setRequestId(long requestId) {
         this.requestId = requestId;
 
         return this;
@@ -48,7 +48,7 @@ public class DefaultRequest implements Request {
         return methodName;
     }
 
-    public DefaultRequest setMethodName(String methodName) {
+    public Request setMethodName(String methodName) {
         this.methodName = methodName;
 
         return this;
@@ -121,7 +121,7 @@ public class DefaultRequest implements Request {
                 .toString();
     }
 
-    public String getRequestId() {
+    public long getRequestId() {
         return requestId;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface Response extends Serializable {
 
-    Response setId(String id);
+    Response setId(long id);
 
     long getId();
 
